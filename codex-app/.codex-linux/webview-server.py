@@ -43,7 +43,6 @@ if len(sys.argv) >= 4 and sys.argv[2] == "--bind":
 
 HOME = pathlib.Path.home()
 CODEX_CONFIG_PATH = HOME / ".codex" / "config.toml"
-CLIPROXY_KEY_PATH = HOME / ".cli-proxy-api" / "local-api-key"
 CLIPROXY_CONFIG_PATH = pathlib.Path(os.environ.get("CLIPROXYAPI_CONFIG", HOME / "CLIProxyAPI" / "config.yaml"))
 CLIPROXY_BASE_URL = os.environ.get("CLIPROXYAPI_BASE_URL", "http://127.0.0.1:8317").rstrip("/")
 if CLIPROXY_BASE_URL.endswith("/v1"):
@@ -143,13 +142,7 @@ def _write_codex_model(model):
 
 
 def _cliproxy_api_key():
-    env_key = os.environ.get("CLIPROXYAPI_PROXY_CLIENT_KEY", "").strip()
-    if env_key:
-        return env_key
-    try:
-        return CLIPROXY_KEY_PATH.read_text(encoding="utf-8").strip()
-    except OSError:
-        return ""
+    return os.environ.get("CLIPROXYAPI_PROXY_CLIENT_KEY", "").strip()
 
 
 def _json_response(handler, status, payload):
